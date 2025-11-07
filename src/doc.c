@@ -150,7 +150,7 @@ void document_mergeDefineHeader(FILE* file) {
 	}
 }
 
-static const char*document_externify(const char* txt) {
+static const char*document_externify(const char* txt, bool firstcase) {
 	static char buf[1024 * 8];
 	int i = 0;
 	
@@ -177,7 +177,7 @@ static const char*document_externify(const char* txt) {
 		buf[i] = *txt;
 		if (i && !isalnum(txt[-1]))
 			buf[i] = toupper(buf[i]);
-		if (!i) /* first letter is always capitalized */
+		if (!i && firstcase) /* first letter is always capitalized */
 			buf[i] = toupper(buf[i]);
 		++i;
 		++txt;
@@ -254,7 +254,7 @@ void document_mergeExternHeader(FILE* header, FILE* linker, FILE* o, bool usePre
 		char buffer[512];
 		
 		if (doc->type & DOC_SPACE1 && (doc->type & 0xF) != T_PAL) {
-			const char* txt = document_externify(doc->text[0]);
+			const char* txt = document_externify(doc->text[0],usePrefixes);
 			if (usePrefixes)
 			{
 				snprintf(
