@@ -352,13 +352,29 @@ void document_mergeExternHeader(FILE* header, FILE* linker, FILE* o, bool usePre
 				if (doc->offset == 0)
 					fprintf(header, "\ntypedef enum {\n");
 				else
-					fprintf(header, "} Skel%sLimbs;\n\n", doc->text[0]);
+				{
+					if (usePrefixes)
+						fprintf(header, "} Skel%sLimbs;\n\n", doc->text[0]);
+					else
+						fprintf(header, "} %sLimbs;\n\n", doc->text[0]);
+				}
+
 				
 			} else {
 				char* skelname;
 				
-				skelname = strdup(Canitize(doc->text[0], 1));
-				fprintf(header, "    %s_LIMB_%s,\n", skelname, Canitize(doc->text[1], 1));
+				
+				if (usePrefixes)
+				{
+					skelname = strdup(Canitize(doc->text[0], 1));
+					fprintf(header, "    %s_LIMB_%s,\n", skelname, Canitize(doc->text[1], 1));
+				}
+				else
+				{
+					skelname = doc->text[0];
+					fprintf(header, "    %s,\n", skelname, doc->text[1]);
+				}
+				
 				
 				free(skelname);
 			}
