@@ -372,7 +372,7 @@ void document_mergeExternHeader(FILE* header, FILE* linker, FILE* o, bool usePre
 				else
 				{
 					skelname = doc->text[0];
-					fprintf(header, "    %s,\n", skelname, doc->text[1]);
+					fprintf(header, "    %s,\n", doc->text[1]);
 				}
 				
 				
